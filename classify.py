@@ -246,34 +246,34 @@ y_frames_train1 = np.array(y_frames_train1)
 
 
 # Make pairs for siamese network
-pos_X1, pos_X2, _, neg_X1 = generate_pairs(frames_train1, y_frames_train1, rand_samples= -1, pos_pair_size=1200, extra_data=[])
+anchor, pos, neg = generate_pairs(frames_train1, y_frames_train1, rand_samples= -1, pos_pair_size=1200)
 
-pos_X1 = pos_X1.astype(np.float16)
-pos_X2 = pos_X2.astype(np.float16)
-neg_X1 = neg_X1.astype(np.float16)
+anchor = anchor.astype(np.float16)
+pos = pos.astype(np.float16)
+neg = neg.astype(np.float16)
 
-np.savez_compressed(os.getcwd()+'/training_siamese_frames', a=pos_X1, b= pos_X2, c= neg_X1)
+np.savez_compressed(os.getcwd()+'/training_siamese_frames', a=anchor, b= pos, c= neg)
 
 data = np.load(os.getcwd()+'/training_siamese_frames.npz')        
-pos_X1 = data['a']
-pos_X2 = data['b']
-neg_X1 = data['c']
+anchor = data['a']
+pos = data['b']
+neg = data['c']
 
 
-print("Siamese pairs ", pos_X1.shape, pos_X2.shape, neg_X1.shape)
+print("Siamese pairs ", anchor.shape, pos.shape, neg.shape)
 
 
 
 
 # Train the model
-_,r,c = pos_X1.shape
+_,r,c = anchor.shape
 encoder, model = get_model(c,r)
 
-pos_X1 = pos_X2.transpose(0, 2, 1)
-pos_X2 = pos_X2.transpose(0, 2, 1)
-neg_X1 = neg_X1.transpose(0, 2, 1)
+anchor = pos.transpose(0, 2, 1)
+pos = pos.transpose(0, 2, 1)
+neg = neg.transpose(0, 2, 1)
 
-y = np.ones((len(pos_X1), 32*3))
+y = np.ones((len(anchor), 32*3))
 
 # Fit model
 mc = ModelCheckpoint(os.getcwd()+'/model_checkpoint.h5', 
@@ -281,7 +281,7 @@ mc = ModelCheckpoint(os.getcwd()+'/model_checkpoint.h5',
 
 
 # Train the model
-model.fit([pos_X1, pos_X2, neg_X1], y, epochs= 30, callbacks= [mc], batch_size= 256, verbose= 1)
+model.fit([anchor, pos, neg], y, epochs= 30, callbacks= [mc], batch_size= 256, verbose= 1)
 # model.save(os.getcwd() + "/siamese.h5")
 # encoder.save(os.getcwd() + "/encoder.h5")
 

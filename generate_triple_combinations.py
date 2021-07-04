@@ -22,10 +22,10 @@ Parameters:
             pair_len : Number of random pairs from each class, Type: integer. By default it selects all pairs
 
     OUTPUT
-            pos_X1 and pos_X2 are pairs of features.
+            anchor and pos are pairs of features.
 
 '''
-def generate_positive_pairs(X, y, rand_samples, pair_len, extra_data=[]) :
+def generate_positive_pairs(X, y, rand_samples, pair_len) :
 
     # Shape of features
     row, col = X.shape[0], X.shape[1]
@@ -33,9 +33,8 @@ def generate_positive_pairs(X, y, rand_samples, pair_len, extra_data=[]) :
     # Get unique elements of y array along with their frequencies
     uniq, freq = np.unique(y, return_counts=True)
 
-    positive_X1 = []
-    positive_X2 = []
-    positive_extra = [[] * len(extra_data)]
+    anchor = []
+    pos = []
     count = 0
 
     # Traverse through each class and select random samples
@@ -63,43 +62,23 @@ def generate_positive_pairs(X, y, rand_samples, pair_len, extra_data=[]) :
         # print(len(pairs))
 
         # Get features associated with those indices
-        positive_X1 += [X[i] for i, _ in pairs]
-        positive_X2 += [X[i] for _, i in pairs]    
-        if len(extra_data) > 0 :
-            # print("Length of extra : ", len(extra_data))
-            # try :
-            #     print("Length of positive_extra : ", len(positive_extra), len(positive_extra[0].shape))
-            # except :
-            #     0
-            for j in range(len(extra_data)) :
-                
-                e = extra_data[j]
-                positive_extra[j] += [e[i] for i,_ in pairs]
+        anchor += [X[i] for i, _ in pairs]
+        pos += [X[i] for _, i in pairs]    
 
     # Convert features to numpy matrix
-    positive_X1 = np.array(positive_X1)
-    a = (len(positive_X1),)
+    anchor = np.array(anchor)
+    a = (len(anchor),)
     b = tuple(X[0].shape)
-    positive_X1 = positive_X1.reshape(a+b)
+    anchor = anchor.reshape(a+b)
 
-    a = (len(positive_X1),)
+    a = (len(anchor),)
 
-    positive_X2 = np.array(positive_X2)
-    positive_X2 = positive_X2.reshape(a+b)
-
-    for j in range(len(extra_data)) :
-        
-        curr = positive_extra[j]
-        curr = np.array(curr)
-
-        a = (len(curr),)
-        b = tuple(curr[0].shape)
-        curr = curr.reshape(a+b)
-        positive_extra[j] = curr
+    pos = np.array(pos)
+    pos = pos.reshape(a+b)
 
     # print(positive_extra[0].shape)
 
-    return positive_X1, positive_X2, positive_extra, uniq, freq
+    return anchor, pos, uniq, freq
 
 
 
@@ -117,7 +96,7 @@ Parameters:
             pair_len : Number of random pairs from each class, Type: integer. By default it selects all pairs
 
     OUTPUT
-            neg_X1 and neg_X2 are pairs of features.
+            neg and neg_X2 are pairs of features.
 
 '''
 
@@ -150,7 +129,7 @@ def generate_negative_pairs(X, y, uniq, freq, rand_samples, pair_len) :
         indices.append(random_indices)   
         # print(len(random_indices))
 
-    negative_X1 = []
+    neg = []
 
     # Generate negative pairs
     for i in range(len(uniq)) :
@@ -170,18 +149,18 @@ def generate_negative_pairs(X, y, uniq, freq, rand_samples, pair_len) :
             indices1 = random.sample(curr, num)
             indices1 = indices1[:pair_len]
             # Get features associated with those indices
-            negative_X1 += [X[p] for p in indices1]
+            neg += [X[p] for p in indices1]
 
 
     # Convert features to numpy matrix
-    negative_X1 = np.array(negative_X1)
-    a = (len(negative_X1),)
+    neg = np.array(neg)
+    a = (len(neg),)
     b = tuple(X[0].shape)
 
-    negative_X1 = negative_X1.reshape(a+b)
+    neg = neg.reshape(a+b)
 
 
-    return negative_X1
+    return neg
 
 
 
@@ -209,8 +188,8 @@ Parameters:
             pos_pair_size : Number of positive random pairs from each class, Type: integer. By default it selects all pairs
 
     OUTPUT
-            pos_X1 and pos_X2 are positive pairs of features.
-            neg_X1 and neg_X2 are negative pairs of features.
+            anchor and pos are positive pairs of features.
+            neg and neg_X2 are negative pairs of features.
 
 '''
 
@@ -252,9 +231,9 @@ def generate_pairs(X, y, rand_samples, pos_pair_size=-1, extra_data=[]) :
     # print(pair_neg * neg_samples, pos_pair_size * i)
     # sys.exit(1)
 
-    pos_X1, pos_X2, pos_extra, uniq, freq = generate_positive_pairs(X, y, rand_samples= rand_samples, pair_len=pos_samples, extra_data=extra_data)
-    neg_X1 = generate_negative_pairs(X, y, uniq, freq, rand_samples= rand_samples, pair_len=pos_samples)
+    anchor, pos, uniq, freq = generate_positive_pairs(X, y, rand_samples= rand_samples, pair_len=pos_samples)
+    neg = generate_negative_pairs(X, y, uniq, freq, rand_samples= rand_samples, pair_len=pos_samples)
     
-    return pos_X1, pos_X2, pos_extra, neg_X1
+    return anchor, pos, neg
 
 
