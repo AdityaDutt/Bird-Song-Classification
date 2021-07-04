@@ -5,4 +5,4 @@ We want to classify different birds species given their audio samples. We have e
 
 Siamese Networks along with dilated 1D convolutions are used here to classify 9 different bird species.
 
-<img align="center" alt="confmat" src="./confmat_test.png" />
+<img align="center" alt="confmat" width="150%" src="./confmat_test.png" />
