@@ -184,7 +184,7 @@ frames_test = frames_test.reshape((len(frames_test), r, c))
 dataX = np.concatenate((frames_train, frames_test), axis=0)
 datay = np.concatenate((y_frames_train, y_frames_test), axis=0)
 
-frames_train, frames_test, y_frames_train, y_frames_test = train_test_split(dataX, datay, test_size=0.5)
+frames_train, frames_test, y_frames_train, y_frames_test = train_test_split(dataX, datay, test_size=0.6)
 
 
 # Write training and testing data into a pickle file
