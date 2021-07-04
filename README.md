@@ -2,7 +2,7 @@
 
 <img align="center" alt="confmat" width=150% src="./wallpaper.png" />
 
-The goal is to classify different birds species based on their songs/calls. Spectrograms have been extracted from the audio samples and used as features for classification. I am using the [British Birdsong Dataset](https://www.kaggle.com/rtatman/british-birdsong-dataset) available on Kaggle for this experiment.
+The goal is to classify different birds species based on their songs/calls. Spectrograms have been extracted from the audio samples and used as features for classification. A SIamese network based on 1D dilated convolutions is used here. Model is trained using triplet loss. I am using the [British Birdsong Dataset](https://www.kaggle.com/rtatman/british-birdsong-dataset) available on Kaggle for this experiment.
 
 Siamese Networks along with dilated 1D convolutions are used here to classify 9 different bird species.
 
