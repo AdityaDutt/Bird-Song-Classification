@@ -2,7 +2,7 @@
 
 <img align="center" alt="confmat" width=150% src="./wallpaper.png" />
 
-We want to classify different birds species given their audio samples. We have extracted spectrograms of the audio samples and used them as features for classification. We can use the [British Birdsong Dataset](https://www.kaggle.com/rtatman/british-birdsong-dataset) available on Kaggle for this experiment.
+The goal is to classify different birds species given their audio samples. Spectrograms have been extracted from the audio samples and used as features for classification. I am using the [British Birdsong Dataset](https://www.kaggle.com/rtatman/british-birdsong-dataset) available on Kaggle for this experiment.
 
 Siamese Networks along with dilated 1D convolutions are used here to classify 9 different bird species.
 
