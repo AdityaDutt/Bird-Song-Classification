@@ -281,9 +281,9 @@ mc = ModelCheckpoint(os.getcwd()+'/model_checkpoint.h5',
 
 
 # Train the model
-model.fit([anchor, pos, neg], y, epochs= 30, callbacks= [mc], batch_size= 256, verbose= 1)
-model.save(os.getcwd() + "/siamese.h5")
-encoder.save(os.getcwd() + "/encoder.h5")
+# model.fit([anchor, pos, neg], y, epochs= 30, callbacks= [mc], batch_size= 256, verbose= 1)
+# model.save(os.getcwd() + "/siamese.h5")
+# encoder.save(os.getcwd() + "/encoder.h5")
 
 
 # Load the model
