@@ -7,3 +7,11 @@ We want to classify different birds species given their audio samples. We have e
 Siamese Networks along with dilated 1D convolutions are used here to classify 9 different bird species.
 
 <img align="center" alt="confmat" width="3000px" height="600" src="./confmat_test.png" />
+
+
+Note: If you are having this error: AttributeError: module 'keras.utils.generic_utils' has no attribute 'populate_dict_with_module_objects'.
+Type: 
+pip uninstall tf-nightly
+pip uninstall tf-estimate-nightly
+pip install tensorflow --upgrade --force-reinstall
+
